@@ -1,10 +1,10 @@
 #!python3.12
-import functools
+from __future__ import annotations
+
 import logging
 import pathlib
 from argparse import ArgumentParser
 
-import click
 import trio
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,9 @@ def build_convert_wav_cmd(file: pathlib.Path) -> list[str]:
 
 
 def build_split_audio_cmd(
-    file: pathlib.Path, segment_seconds: int, output_directory: pathlib.Path
+    file: pathlib.Path,
+    segment_seconds: int,
+    output_directory: pathlib.Path,
 ) -> list[str]:
     return [
         "ffmpeg",
@@ -59,7 +61,9 @@ def build_split_audio_cmd(
 
 
 def build_whisper_cpp_cmd(
-    binary: pathlib.Path, model: pathlib.Path, file: pathlib.Path
+    binary: pathlib.Path,
+    model: pathlib.Path,
+    file: pathlib.Path,
 ) -> list[str]:
     return [binary, "-m", model, "-f", file, "--output-txt", file.with_suffix(".txt")]
 
@@ -87,8 +91,10 @@ async def main():
 
     await trio.run_process(
         build_split_audio_cmd(
-            args.input_file_path, args.segment_length, args.output_directory
-        )
+            args.input_file_path,
+            args.segment_length,
+            args.output_directory,
+        ),
     )
 
     all_inputs = sorted(pathlib.Path(output_dir).glob("*.m4a"))
