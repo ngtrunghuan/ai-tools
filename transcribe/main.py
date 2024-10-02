@@ -26,7 +26,7 @@ async def run_and_print(args, *, task_status):
         )
 
 
-def build_convert_wav_cmd(file: pathlib.Path) -> list[str]:
+def build_convert_wav_cmd(file: pathlib.Path) -> list[str | pathlib.Path]:
     return [
         "ffmpeg",
         "-i",
@@ -45,7 +45,7 @@ def build_split_audio_cmd(
     file: pathlib.Path,
     segment_seconds: int,
     output_directory: pathlib.Path,
-) -> list[str]:
+) -> list[str | pathlib.Path]:
     return [
         "ffmpeg",
         "-i",
@@ -64,7 +64,7 @@ def build_whisper_cpp_cmd(
     binary: pathlib.Path,
     model: pathlib.Path,
     file: pathlib.Path,
-) -> list[str]:
+) -> list[str | pathlib.Path]:
     return [binary, "-m", model, "-f", file, "--output-txt", file.with_suffix(".txt")]
 
 
